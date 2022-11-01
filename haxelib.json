@@ -1,0 +1,11 @@
+{
+    "name": "comma",
+    "url":"https://github.com/metincetin/comma",
+    "license": "MIT",
+    "tags":["cli"],
+    "description": "Command-line interface tool",
+    "version":"0.1.1",
+    "contributors": ["Metin"],
+    "classPath": "src/",
+    "releasenote": "General improvements"
+}
