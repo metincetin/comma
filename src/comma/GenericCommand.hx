@@ -1,11 +1,16 @@
 package comma;
 
+import comma.ParsedOptions;
+import comma.ParsedOptions;
+import comma.ParsedOptions;
+
 class GenericCommand extends Command{
-    var f:(CliApp, Array<String>)->Void;
+    var f:(CliApp, Array<String>, ParsedOptions)->Void;
     var name = "";
     var description = "";
     
-    public function new(name:String, description:String, func:(CliApp, Array<String>)->Void){
+    public function new(name:String, description:String, func:(CliApp, Array<String>, ParsedOptions)->Void){
+        super();
         this.name = name;
         this.description = description;
         this.f = func;
@@ -18,7 +23,7 @@ class GenericCommand extends Command{
         return description;
     }
 
-    override function execute(app:CliApp, values:Array<String>,  options:Array<String>) {
-        f(app, options);
+    override function onExecuted(app:CliApp, values:Array<String>,  options:ParsedOptions) {
+        f(app, values, options);
     }
 }

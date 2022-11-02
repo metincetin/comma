@@ -32,14 +32,17 @@ class Command{
         return null;
     }
 
-    public function execute(app:CliApp,values:Array<String>, options:ParsedOptions){
+    public final function execute(app:CliApp,values:Array<String>, options:ParsedOptions){
         if (values.length != valueDefinitions.length){
             app.println("Usage:");
             app.println(Style.tab(1,true) + getHelpString());
             return;
         }
+        onExecuted(app, values, options);
     }
 
+    function onExecuted(app, value, options){}
+    
     public function getHelpString(){
         var valuesDescription = "";
         for (i in 0...valueDefinitions.length){

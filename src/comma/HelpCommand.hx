@@ -9,7 +9,7 @@ class HelpCommand extends Command{
         return "Prints help";
     }
 
-    override function execute(app:CliApp,values:Array<String>,  options:ParsedOptions) {
+    override function onExecuted(app:CliApp,values:Array<String>,  options:ParsedOptions) {
         app.printHelp();
     }
 }
