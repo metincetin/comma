@@ -1,5 +1,6 @@
 package comma;
 
+import comma.ValueDefinition;
 import haxe.io.Eof;
 
 class CliApp {
@@ -56,18 +57,23 @@ class CliApp {
 	}
 
 	public function start() {
-		var options = ParsedOptions.parse(Sys.args());
-		var values = parseValues(Sys.args());
+		var args = Sys.args();
+		var cwd = args.pop();
+		var options = ParsedOptions.parse(args);
+		var values = parseValues(args);
+		
+		Sys.setCwd(cwd);
+		
 		if (executeDefaultCommandOnly) {
 			getDefaultCommand().execute(this, values, options);
 			return;
 		}
-		if (Sys.args().length == 0) {
+		if (args.length == 0) {
 			printHelp();
 			return;
 		}
 
-		var cm = Sys.args()[0];
+		var cm = args[0];
 		if (cm.charAt(0) == "-") {
 			printHelp();
 			return;
@@ -81,7 +87,7 @@ class CliApp {
 
 	function parseValues(args:Array<String>){
 		var ret = new Array<String>();
-		for(i in 1...args.length - 1){
+		for(i in 1...args.length){
 			var val = args[i];
 			if (val.charAt(0) == "-"){
 				return ret;
@@ -107,15 +113,70 @@ class CliApp {
 	public function printHelp() {
 		println(appName + " help");
 		if (executeDefaultCommandOnly){
-			getDefaultCommand().getHelpString();
+			println(
+				Table.create()
+					.addRow()
+					.addColumn(defaultCommand.getName()+":")
+					.addEmptyColumn(1)
+					.addColumn(defaultCommand.getDescription()).toString()
+			);
 			return;
 		}
 		if (commands.length > 0) {
 			println(Style.tab(1, true) + "Commands:");
-
+			
+			var table = Table.create();
 			for (c in commands) {
-				println(Style.tab(2, true) + c.getHelpString());
+				if (c.getName() == "") continue;
+				table.addRow();
+
+				var commandNameColumn = "";
+
+				if (c != defaultCommand){
+					commandNameColumn = c.getName();
+				}
+
+
+				var valueDefinitions = c.getValueDefinitions();
+				if (valueDefinitions.length > 0){
+					for(i in 0...valueDefinitions.length){
+						var valDef = c.getValueDefinitions()[i];
+						if (i == 0){
+							commandNameColumn += " [";
+						}
+						commandNameColumn += valDef.name;
+
+						if (i < valueDefinitions.length - 1){
+							commandNameColumn +=", ";
+						}
+
+						if (i == valueDefinitions.length - 1){
+							commandNameColumn += "]";
+						}
+					}
+				}
+
+				table.addColumn(commandNameColumn);
+
+				
+
+				table.addEmptyColumn(16);
+				table.addColumn(c.getDescription());
+				if (c.getOptionDefinitions().length > 0){
+					table.addRow();
+					for(optDef in c.getOptionDefinitions()){
+						var optDefNameColumn = "-" + optDef.getName();
+						if (optDef.getAlias() != ""){
+							optDefNameColumn += " --"+optDef.getAlias();
+						}
+						table.addColumn(Style.tab(1, true) + optDefNameColumn);
+						table.addEmptyColumn(16);
+						table.addColumn(optDef.getDescription());
+					}
+				}	
+				//println(Style.tab(2, true) + c.getHelpString());
 			}
+			println(table.toString(2));
 		}
 	}
 }

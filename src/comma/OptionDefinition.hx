@@ -5,7 +5,7 @@ class OptionDefinition{
     var alias = "";
     var description = "";
     public function new(name:String, alias:String="",description:String = ""){
-        this.name = "";
+        this.name = name;
         this.alias = alias;
         this.description = description;
     }
@@ -18,9 +18,5 @@ class OptionDefinition{
     }
     public function getDescription(){
         return description;
-    }
-    
-    public function getHelpString(){
-        return "-" + getName() + "--"+ getAlias() + ": " + Style.tab(2) + getDescription();
     }
 }
