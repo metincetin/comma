@@ -39,7 +39,6 @@ class Command{
     }
 
     public final function execute(app:CliApp,values:Array<String>, options:ParsedOptions){
-        trace(values);
         if (values.length != valueDefinitions.length){
             app.println("Usage:");
             var help = Table.create()

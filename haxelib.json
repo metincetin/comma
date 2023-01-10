@@ -4,8 +4,8 @@
     "license": "MIT",
     "tags":["cli"],
     "description": "Command-line interface tool",
-    "version":"0.1.3",
+    "version":"0.1.4",
     "contributors": ["Metin"],
     "classPath": "src/",
-    "releasenote": "Bugfixes and help output formatting improvements"
+    "releasenote": "Removed 'trace' calls"
 }
