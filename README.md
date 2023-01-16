@@ -51,7 +51,7 @@ app.addCommand(new HelloWorldCommand());
 app.start();
 ```
 
-To execute a find specific command, return value of `getName()` is used. The result would be
+To execute a specific command, return value of `getName()` is used to find in registered commands. The result would be
 
 ```text
 ~ yourApp hello
@@ -108,7 +108,7 @@ commands can contain values. Anything provided after the option until another op
 
 ```haxe
 if (options.exists("shout")){
-    text = text.toUpperCase() + " " + option.get("shout").join("-");
+    text = text.toUpperCase() + " " + options.get("shout").join("-");
 }
 ```
 
