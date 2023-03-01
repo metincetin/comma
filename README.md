@@ -145,15 +145,21 @@ Hello there, Foo
 ### Styling
 
 `Style` class can be used to stylize the output.
+
 `Style.color(String, TextColor)` converts given string to colored string
+
 `Style.background(String, BackgroundColor)` sets the background color of the given string.
+
 `Style.textStyle(String, TextStyle)` sets the style of the given string. (Bold, Underline, Reversed)
+
 `Style.space(Int)` places space given times
+
 `Style.tabs(Int, Bool=true)` places tabs given times, second parameter decides whether to use \t or 4x spaces.
+
 `Style.compose(String)` creates a builder to combine multiple style functions. 
 
 ```haxe
-var stylizedText = Style.compose("Hello, world!).setTextStyle(Bold).setTextColor(Red).setBackgroundColor(Blue).build();
+var stylizedText = Style.compose("Hello, world!").setTextStyle(Bold).setTextColor(Red).setBackgroundColor(Blue).build();
 cliApp.println(stylizedText);
 ```
 
