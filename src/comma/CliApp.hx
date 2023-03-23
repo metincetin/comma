@@ -57,13 +57,22 @@ class CliApp {
 	}
 
 	public function start() {
-		var args = Sys.args();
+		executeInternal(Sys.args());
+	}
+
+	public function execute(command:String){
+		var args = command.split(" ");
+		args.push(Sys.getCwd());
+		executeInternal(args);
+	}
+
+	function executeInternal(args:Array<String>) {
 		var cwd = args.pop();
 		var options = ParsedOptions.parse(args);
 		var values = parseValues(args);
-		
+
 		Sys.setCwd(cwd);
-		
+
 		if (executeDefaultCommandOnly) {
 			getDefaultCommand().execute(this, values, options);
 			return;
@@ -79,17 +88,17 @@ class CliApp {
 			return;
 		}
 		if (hasCommandOfName(cm)) {
-			getCommandOfName(cm).execute(this,values, options);
+			getCommandOfName(cm).execute(this, values, options);
 		} else {
 			println("Command not found: " + cm);
 		}
 	}
 
-	function parseValues(args:Array<String>){
+	function parseValues(args:Array<String>) {
 		var ret = new Array<String>();
-		for(i in 1...args.length){
+		for (i in 1...args.length) {
 			var val = args[i];
-			if (val.charAt(0) == "-"){
+			if (val.charAt(0) == "-") {
 				return ret;
 			}
 			ret.push(val);
@@ -112,45 +121,44 @@ class CliApp {
 
 	public function printHelp() {
 		println(appName + " help");
-		if (executeDefaultCommandOnly){
-			println(
-				Table.create()
-					.addRow()
-					.addColumn(defaultCommand.getName()+":")
-					.addEmptyColumn(1)
-					.addColumn(defaultCommand.getDescription()).toString()
-			);
+		if (executeDefaultCommandOnly) {
+			println(Table.create()
+				.addRow()
+				.addColumn(defaultCommand.getName() + ":")
+				.addEmptyColumn(1)
+				.addColumn(defaultCommand.getDescription())
+				.toString());
 			return;
 		}
 		if (commands.length > 0) {
 			println(Style.tab(1, true) + "Commands:");
-			
+
 			var table = Table.create();
 			for (c in commands) {
-				if (c.getName() == "") continue;
+				if (c.getName() == "")
+					continue;
 				table.addRow();
 
 				var commandNameColumn = "";
 
-				if (c != defaultCommand){
+				if (c != defaultCommand) {
 					commandNameColumn = c.getName();
 				}
 
-
 				var valueDefinitions = c.getValueDefinitions();
-				if (valueDefinitions.length > 0){
-					for(i in 0...valueDefinitions.length){
+				if (valueDefinitions.length > 0) {
+					for (i in 0...valueDefinitions.length) {
 						var valDef = c.getValueDefinitions()[i];
-						if (i == 0){
+						if (i == 0) {
 							commandNameColumn += " [";
 						}
 						commandNameColumn += valDef.name;
 
-						if (i < valueDefinitions.length - 1){
-							commandNameColumn +=", ";
+						if (i < valueDefinitions.length - 1) {
+							commandNameColumn += ", ";
 						}
 
-						if (i == valueDefinitions.length - 1){
+						if (i == valueDefinitions.length - 1) {
 							commandNameColumn += "]";
 						}
 					}
@@ -158,23 +166,21 @@ class CliApp {
 
 				table.addColumn(commandNameColumn);
 
-				
-
 				table.addEmptyColumn(16);
 				table.addColumn(c.getDescription());
-				if (c.getOptionDefinitions().length > 0){
+				if (c.getOptionDefinitions().length > 0) {
 					table.addRow();
-					for(optDef in c.getOptionDefinitions()){
+					for (optDef in c.getOptionDefinitions()) {
 						var optDefNameColumn = "-" + optDef.getName();
-						if (optDef.getAlias() != ""){
-							optDefNameColumn += " --"+optDef.getAlias();
+						if (optDef.getAlias() != "") {
+							optDefNameColumn += " --" + optDef.getAlias();
 						}
 						table.addColumn(Style.tab(1, true) + optDefNameColumn);
 						table.addEmptyColumn(16);
 						table.addColumn(optDef.getDescription());
 					}
-				}	
-				//println(Style.tab(2, true) + c.getHelpString());
+				}
+				// println(Style.tab(2, true) + c.getHelpString());
 			}
 			println(table.toString(2));
 		}
