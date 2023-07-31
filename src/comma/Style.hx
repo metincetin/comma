@@ -67,8 +67,7 @@ class Style{
     }
 }
 
-@:enum
-abstract TextColor(String){
+enum abstract TextColor(String){
     var Black = "\u001b[30m";
     var Red = "\u001b[31m";
     var Green = "\u001b[32m";
@@ -88,8 +87,7 @@ abstract TextColor(String){
     var BrightWhite = "\u001b[37;1m";
 }
 
-@:enum
-abstract BackgroundColor(String){
+enum abstract BackgroundColor(String){
     
     var Black = "\u001b[40m";
     var Red = "\u001b[41m";
@@ -109,8 +107,7 @@ abstract BackgroundColor(String){
     var BrightWhite = "\u001b[47;1m";
 }
 
-@:enum
-abstract TextStyle(String){
+enum abstract TextStyle(String){
     var Bold = "\u001b[1m";
     var Underline = "\u001b[4m";
     var Reversed = "\u001b[7m";
