@@ -131,7 +131,7 @@ class CliApp {
 			return;
 		}
 		if (commands.length > 0) {
-			println(Style.tab(1, true) + "Commands:");
+			println("Commands:");
 
 			var table = Table.create();
 			for (c in commands) {
@@ -178,11 +178,11 @@ class CliApp {
 						table.addColumn(Style.tab(1, true) + optDefNameColumn);
 						table.addEmptyColumn(16);
 						table.addColumn(optDef.getDescription());
+						table.addRow();
 					}
 				}
-				// println(Style.tab(2, true) + c.getHelpString());
 			}
-			println(table.toString(2));
+			println(table.toString(1));
 		}
 	}
 }

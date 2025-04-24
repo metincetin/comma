@@ -28,6 +28,13 @@ class Style{
         return ret;
     }
 
+    public static function disableWordWrap(){
+        Sys.println("\x1b[?7l");
+    }
+    public static function enableWordWrap(){
+        Sys.println("\x1b[?7h");
+    }
+
     public static function color(message:String, textColor:TextColor){
         return textColor + message + reset;
     }

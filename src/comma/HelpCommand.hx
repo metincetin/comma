@@ -10,6 +10,8 @@ class HelpCommand extends Command{
     }
 
     override function onExecuted(app:CliApp,values:Array<String>,  options:ParsedOptions) {
+        Style.disableWordWrap();
         app.printHelp();
+        Style.enableWordWrap();
     }
 }
