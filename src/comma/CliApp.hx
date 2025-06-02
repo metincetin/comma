@@ -67,11 +67,8 @@ class CliApp {
 	}
 
 	function executeInternal(args:Array<String>) {
-		var cwd = args.pop();
 		var options = ParsedOptions.parse(args);
 		var values = parseValues(args);
-
-		Sys.setCwd(cwd);
 
 		if (executeDefaultCommandOnly) {
 			getDefaultCommand().execute(this, values, options);
